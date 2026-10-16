@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="hu">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>BÁTYÓ 17 — Ultra Ciki Birthday Quest</title>
+<style>
+:root{--bg:#fff;--ink:#000;--pink:#ff4fb3;--cyan:#34d9ff;--yellow:#ffe84a;--purple:#9c6cff}
+*{box-sizing:border-box} body{margin:0;min-height:100vh;font-family:Arial,sans-serif;color:#111;
+background:repeating-linear-gradient(45deg,#fff 0 22px,#f4f4f4 22px 44px)}
+.wrap{min-height:100vh;display:grid;place-items:center;padding:14px}.card{width:min(700px,100%);background:white;border:5px solid #000;
+box-shadow:10px 10px 0 #000;padding:22px;text-align:center;position:relative;overflow:hidden}
+.card:before,.card:after{position:absolute;font-size:55px;opacity:.18;transform:rotate(-18deg)}
+.card:before{content:"🦄";left:-8px;top:8px}.card:after{content:"⚙️";right:-8px;bottom:8px}
+h1{font-size:clamp(38px,10vw,72px);line-height:.9;margin:10px 0;text-transform:uppercase}
+h2{font-size:clamp(26px,7vw,42px);margin:8px}.comic{display:inline-block;border:4px solid #000;padding:7px 12px;
+font-weight:900;transform:rotate(-2deg);background:var(--yellow);box-shadow:5px 5px 0 #000}
+p{font-size:clamp(18px,5vw,24px);line-height:1.35;margin:12px auto;max-width:580px}
+.emoji{font-size:42px;letter-spacing:.1em}.btn{border:4px solid #000;background:var(--pink);padding:15px 20px;font-weight:1000;
+font-size:16px;box-shadow:6px 6px 0 #000;cursor:pointer;margin:14px 0;text-transform:uppercase}
+.btn:active{transform:translate(5px,5px);box-shadow:1px 1px 0 #000}.progress{height:18px;border:4px solid #000;margin:18px auto 5px;max-width:480px;background:#fff}
+.bar{height:100%;background:linear-gradient(90deg,var(--pink),var(--yellow),var(--cyan));transition:.5s;width:0}
+.stats{font-weight:900;font-size:12px;display:flex;justify-content:space-between;max-width:480px;margin:auto}
+.bubble{border:4px solid #000;border-radius:50%;padding:10px 15px;display:inline-block;background:var(--cyan);font-weight:900;transform:rotate(2deg)}
+.steam{font-family:Georgia,serif;font-weight:bold;letter-spacing:.08em}.loot{font-size:clamp(30px,8vw,52px);font-weight:1000}
+#toast{position:fixed;left:50%;bottom:20px;transform:translateX(-50%) translateY(100px);opacity:0;background:#ffe84a;border:4px solid #000;
+padding:12px 18px;font-weight:1000;transition:.3s;z-index:5}#toast.show{transform:translateX(-50%) translateY(0);opacity:1}
+.shake{animation:shake .4s}@keyframes shake{0%,100%{transform:rotate(0)}25%{transform:rotate(-1deg)}75%{transform:rotate(1deg)}}
+.small{font-size:13px;font-weight:bold;color:#555}
+</style></head>
+<body><div class="wrap"><main class="card" id="card"></main></div><div id="toast">✨ CSILLOGÓ LOOT MEGSZEREZVE ✨</div>
+<script>
+const Q=[
+{n:1,e:"🦄🚿✨",title:"A SZENT ZUHANYKABIN TITKA",text:`Ó, dicső 17 éves harcos!<br><br>Keresd azt a misztikus helyet,<br>ahol víz hullik az égből,<br>tükörben megjelenik egy gyanús alak,<br>és időnként még szappan is előkerül.`,hint:"Fejtsd meg, hol vár az első mini loot!"},
+{n:2,e:"🍿💥🦄",title:"A PUKKOGÓ UNIKORNIS",text:`Apró sárga izék bemennek.<br>Fehér pufi izék kijönnek.<br><br>A tudomány máig értetlenül áll előtte.<br>(Nem. Nem áll.)`,hint:"Fejtsd meg, hol vár a következő mini loot!"},
+{n:3,e:"⚙️🧦🕵️",title:"A ZOKNIK DIMENZIÓKAPUJA",text:`A legenda szerint itt tűnik el<br>minden második zokni.<br><br>Forog. Zúg. Néha sípol.<br>Steampunknak gyenge,<br>de ruhát egész jól mos.`,hint:"Fejtsd meg, hol vár a következő mini loot!"},
+{n:4,e:"🚗💨💥",title:"A BENZINNEL ETETETT VASSÁRKÁNY",text:`Négy kerekén gurul a bestia,<br>és pénzt eszik reggelire.<br><br>Hamarosan talán te is vezetheted.<br>A család már most retteg.`,hint:"Fejtsd meg, hol vár a következő mini loot!"},
+{n:5,e:"🛏️👑🦄",title:"A KAMASZ HIBERNÁCIÓS KAMRÁJA",text:`Itt fekszik a hős,<br>amikor a világ már túl sok.<br><br>Párna. Paplan. Béke.<br>És a legendás mondat:<br><b>„Mindjárt felkelek.”</b>`,hint:"Fejtsd meg, hol vár az ötödik mini loot!"}
+];
+let i=0,found=0;const c=document.getElementById("card"),t=document.getElementById("toast");
+const prog=()=>`<div class="progress"><div class="bar" style="width:${found*20}%"></div></div><div class="stats"><span>CSILLOGÁS: ${found}/5</span><span>MÉLTÓSÁG: ${Math.max(0,100-found*19)}%</span></div>`;
+function quest(){let q=Q[i];c.classList.remove("shake");void c.offsetWidth;c.classList.add("shake");c.innerHTML=
+`<div class="comic">QUEST ${q.n} / 5</div><div class="emoji">${q.e}</div><h2>${q.title}</h2><p>${q.text}</p><div class="bubble">${q.hint}</div>${prog()}
+<button class="btn" onclick="loot()">🎁 MEGVAN A MINI LOOT!</button><p class="small">Ne csalj. Az unikornis figyel.</p>`}
+function loot(){found=i+1;t.classList.add("show");setTimeout(()=>t.classList.remove("show"),1000);
+c.innerHTML=`<div class="emoji">🌈🦄⚙️💥🎁</div><div class="loot">LOOT #${found}<br>UNLOCKED!</div>
+<p>Gratulálunk!<br>Valahogy ezt is sikerült teljesítened.</p>
+<div class="comic">+17 XP &nbsp; +1 AJÁNDÉK &nbsp; −19 MÉLTÓSÁG</div>${prog()}
+<button class="btn" onclick="${found<5?'next()':'finale()'}">${found<5?'KÖVETKEZŐ ÉRTELMETLEN KÜLDETÉS':'MEGKÜZDÖK A FINAL BOSSSZAL'}</button>`}
+function next(){i++;quest()}
+function finale(){c.innerHTML=`<div class="emoji">🦄⚙️💥👑🎮💥⚙️🦄</div><div class="comic">FINAL BOSS UNLOCKED</div>
+<h1>MEGCSINÁLTAD,<br>TE HŐS.</h1><p><b>5/5 mini loot megszerezve.</b></p>
+<p>A méltóságod sajnos nem élte túl.</p><p>De van még egy utolsó titok.</p>
+<p>Menj oda, ahol az <b>„öt perc” két óráig tart</b>,<br>ahol szörnyeket, világokat és időnként a saját idegrendszeredet pusztítod,<br>miközben fizikailag körülbelül 40 centimétert mozogsz.</p>
+<div class="loot">🎮 A FŐ LOOT A GAMER GÉPEDNÉL VÁR. 🎮</div>
+<p class="steam">⚙ BOLDOG 17. SZÜLETÉSNAPOT, BÁTYÓ! ⚙</p>${prog()}`}
+c.innerHTML=`<div class="emoji">🦄🌈⚙️💥🦸‍♂️🎂</div><div class="comic">SZIGORÚAN KOMOLY KÜLDETÉS</div>
+<h1>BÁTYÓ<br>LEVEL 17</h1><p>Gratulálunk.</p><p><b>17 éves lettél.</b></p>
+<p>Ezért természetesen egy teljesen érett,<br>méltóságteljes és férfias születésnapi programot készítettünk.</p>
+<div class="bubble">🦄 UNIKORNISOS KINCSKERESÉST. 🦄</div>
+<p>5 mini ajándék vár rád.<br>És talán valami más is…</p>
+<button class="btn" onclick="quest()">✨ ELVESZTEM A MÉLTÓSÁGOM ÉS ELINDULOK ✨</button>
+<p class="small">FIGYELEM: az alkalmazás használata súlyos csillámpor-expozícióval járhat.</p>`;
+</script></body></html>
